@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MultiTools - Free Online Tools</title>
+    <meta name="description" content="Free online tools to help you with everyday tasks. Convert, edit, and create files easily.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --text-color: #1f2937;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --accent-color: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: var(--card-background);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            margin-left: 2rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        main {
+            margin-top: 64px;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            margin: -2rem -2rem 2rem -2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .tool-card a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .tool-icon {
+            background: #f8fafc;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .tool-icon i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+        }
+
+        .tool-content {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .tool-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .tool-content p {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        footer {
+            background: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        footer p {
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo">MultiTools</a>
+        <div class="nav-links">
+            <a href="#" class="active">Tools</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="hero">
+            <h1>Free Online Tools</h1>
+            <p>A collection of free online tools to help you with everyday tasks. No registration required.</p>
+        </div>
+
+        <div class="tools-grid">
+            <div class="tool-card">
+                <a href="/services/jpg-to-pdf.html">
+                    <div class="tool-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>JPG to PDF</h3>
+                        <p>Convert JPG images to PDF files instantly. Multiple images supported.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="tool-card">
+                <a href="#">
+                    <div class="tool-icon">
+                        <i class="fas fa-file-image"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>PDF to JPG</h3>
+                        <p>Extract images from PDF files or convert PDF pages to JPG format.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="tool-card">
+                <a href="#">
+                    <div class="tool-icon">
+                        <i class="fas fa-compress"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Image Compressor</h3>
+                        <p>Compress and optimize your images without losing quality. Support all formats.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="tool-card">
+                <a href="#">
+                    <div class="tool-icon">
+                        <i class="fas fa-file-archive"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>PDF Compressor</h3>
+                        <p>Reduce PDF file size while maintaining document quality and formatting.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="tool-card">
+                <a href="#">
+                    <div class="tool-icon">
+                        <i class="fas fa-crop-alt"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Image Resizer</h3>
+                        <p>Resize your images to any dimension while maintaining aspect ratio.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="tool-card">
+                <a href="#">
+                    <div class="tool-icon">
+                        <i class="fas fa-object-group"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Image Cropper</h3>
+                        <p>Crop your images precisely with our easy-to-use cropping tool.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="tool-card">
+                <a href="#">
+                    <div class="tool-icon">
+                        <i class="fas fa-file-word"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Word to PDF</h3>
+                        <p>Convert Word documents to PDF format with perfect formatting.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="tool-card">
+                <a href="#">
+                    <div class="tool-icon">
+                        <i class="fas fa-file-excel"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Excel to PDF</h3>
+                        <p>Convert Excel spreadsheets to PDF with custom page settings.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="tool-card">
+                <a href="#">
+                    <div class="tool-icon">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Image Format Converter</h3>
+                        <p>Convert images between JPG, PNG, WebP, and other formats easily.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="tool-card">
+                <a href="#">
+                    <div class="tool-icon">
+                        <i class="fas fa-file-signature"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>PDF Merger</h3>
+                        <p>Combine multiple PDF files into a single document quickly.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="tool-card">
+                <a href="#">
+                    <div class="tool-icon">
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>PDF Splitter</h3>
+                        <p>Split PDF files into multiple documents or extract specific pages.</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="tool-card">
+                <a href="#">
+                    <div class="tool-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <div class="tool-content">
+                        <h3>Image Editor</h3>
+                        <p>Edit, filter, and enhance your images with our online editor.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 MultiTools. All rights reserved.</p>
+        <div>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+        </div>
+    </footer>
+</body>
+</html>
