@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Remover - MultiTools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --text-color: #1f2937;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --accent-color: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background-color: var(--card-background);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            margin-left: 2rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        main {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .upload-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: #f8fafc;
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .preview-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .preview-box {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .preview-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        .preview-box h3 {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        button:hover {
+            background: var(--secondary-color);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            margin: 1rem 0;
+        }
+
+        .loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #error-message {
+            color: #dc2626;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .actions-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+
+        .download-btn {
+            display: none;
+        }
+
+        .result-btn {
+            margin: 0;
+        }
+
+        .options-container {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .option-group {
+            min-width: 200px;
+        }
+
+        .option-group h4 {
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .color-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #eee;
+            transition: transform 0.2s;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.selected {
+            border: 2px solid var(--primary-color);
+        }
+
+        .enhancement-options {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .enhancement-slider {
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+
+        .custom-color-input {
+            margin-top: 0.5rem;
+        }
+
+        .reset-btn {
+            background: #dc2626;
+            margin-top: 1rem;
+        }
+
+        .reset-btn:hover {
+            background: #b91c1c;
+        }
+
+        footer {
+            background: var(--card-background);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+            box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+        }
+
+        footer div {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        footer a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        footer a:hover {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">MultiTools</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="background-remover.html" class="active">Background Remove</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="upload-container">
+            <h1>Background Remover</h1>
+            <p>Remove background from your images instantly</p>
+            
+            <div class="upload-area" id="dropZone">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Drag and drop your image here or click to select</p>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            </div>
+
+            <div id="error-message"></div>
+            
+            <div class="loading">
+                <i class="fas fa-spinner"></i>
+                <span>Processing your image...</span>
+            </div>
+
+            <div class="options-container">
+                <div class="option-group">
+                    <h4>Background Color</h4>
+                    <div class="color-options">
+                        <div class="color-option" style="background: transparent" data-color="transparent" title="Transparent"></div>
+                        <div class="color-option" style="background: #ffffff" data-color="#ffffff" title="White"></div>
+                        <div class="color-option" style="background: #000000" data-color="#000000" title="Black"></div>
+                        <div class="color-option" style="background: #ff0000" data-color="#ff0000" title="Red"></div>
+                        <div class="color-option" style="background: #00ff00" data-color="#00ff00" title="Green"></div>
+                        <div class="color-option" style="background: #0000ff" data-color="#0000ff" title="Blue"></div>
+                    </div>
+                    <div class="custom-color-input">
+                        <input type="color" id="customColor" value="#ffffff">
+                        <label for="customColor">Custom Color</label>
+                    </div>
+                </div>
+                
+                <div class="option-group">
+                    <h4>Image Enhancement</h4>
+                    <div class="enhancement-options">
+                        <div>
+                            <label for="brightness">Brightness</label>
+                            <input type="range" id="brightness" class="enhancement-slider" min="0" max="200" value="100">
+                        </div>
+                        <div>
+                            <label for="contrast">Contrast</label>
+                            <input type="range" id="contrast" class="enhancement-slider" min="0" max="200" value="100">
+                        </div>
+                        <div>
+                            <label for="saturation">Saturation</label>
+                            <input type="range" id="saturation" class="enhancement-slider" min="0" max="200" value="100">
+                        </div>
+                    </div>
+                    <button id="resetBtn" class="reset-btn">
+                        <i class="fas fa-undo"></i>
+                        Reset All
+                    </button>
+                </div>
+            </div>
+
+            <div class="preview-container">
+                <div class="preview-box" id="originalPreview" style="display: none;">
+                    <h3>Original Image</h3>
+                    <img id="originalImage">
+                </div>
+                <div class="preview-box" id="resultPreview" style="display: none;">
+                    <h3>Result</h3>
+                    <img id="resultImage">
+                    <div class="actions-container">
+                        <a id="downloadBtn" class="download-btn" download="removed-background.png">
+                            <button class="result-btn">
+                                <i class="fas fa-download"></i>
+                                Download Result
+                            </button>
+                        </a>
+                        <button id="newImageBtn" class="result-btn">
+                            <i class="fas fa-undo"></i>
+                            Reset & New
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 MultiTools. All rights reserved.</p>
+        <div>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+        </div>
+    </footer>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const originalPreview = document.getElementById('originalPreview');
+        const resultPreview = document.getElementById('resultPreview');
+        const originalImage = document.getElementById('originalImage');
+        const resultImage = document.getElementById('resultImage');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const newImageBtn = document.getElementById('newImageBtn');
+        const loading = document.querySelector('.loading');
+        const errorMessage = document.getElementById('error-message');
+        
+        // Enhancement controls
+        const brightnessSlider = document.getElementById('brightness');
+        const contrastSlider = document.getElementById('contrast');
+        const saturationSlider = document.getElementById('saturation');
+        const customColorInput = document.getElementById('customColor');
+        const resetBtn = document.getElementById('resetBtn');
+        let selectedColor = 'transparent';
+
+        // Color option selection
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedColor = option.dataset.color;
+                if (resultImage.src) {
+                    applyEnhancements();
+                }
+            });
+        });
+
+        customColorInput.addEventListener('input', (e) => {
+            selectedColor = e.target.value;
+            if (resultImage.src) {
+                applyEnhancements();
+            }
+        });
+
+        // Enhancement sliders
+        [brightnessSlider, contrastSlider, saturationSlider].forEach(slider => {
+            slider.addEventListener('input', () => {
+                if (resultImage.src) {
+                    applyEnhancements();
+                }
+            });
+        });
+
+        // Reset button functionality
+        resetBtn.addEventListener('click', () => {
+            // Reset enhancement sliders
+            brightnessSlider.value = 100;
+            contrastSlider.value = 100;
+            saturationSlider.value = 100;
+
+            // Reset color selection
+            selectedColor = 'transparent';
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelector('.color-option[data-color="transparent"]').classList.add('selected');
+            customColorInput.value = '#ffffff';
+
+            // Apply reset changes if there's an image
+            if (resultImage.src) {
+                applyEnhancements();
+            }
+        });
+
+        newImageBtn.addEventListener('click', () => {
+            // Reset everything
+            originalImage.src = '';
+            resultImage.src = '';
+            originalPreview.style.display = 'none';
+            resultPreview.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            resetBtn.click();
+        });
+
+        function applyEnhancements() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            img.onload = () => {
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                // Draw background if not transparent
+                if (selectedColor !== 'transparent') {
+                    ctx.fillStyle = selectedColor;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+
+                // Draw the image
+                ctx.filter = `brightness(${brightnessSlider.value}%) 
+                            contrast(${contrastSlider.value}%) 
+                            saturate(${saturationSlider.value}%)`;
+                ctx.drawImage(img, 0, 0);
+
+                // Update the result image
+                resultImage.src = canvas.toDataURL('image/png');
+                downloadBtn.href = canvas.toDataURL('image/png');
+            };
+            img.src = resultImage.getAttribute('data-original');
+        }
+
+        // Handle drag and drop
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+            dropZone.style.background = '#f8fafc';
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#ccc';
+            dropZone.style.background = 'white';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#ccc';
+            dropZone.style.background = 'white';
+            
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        });
+
+        // Handle click to upload
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        });
+
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showError('Please upload an image file');
+                return;
+            }
+
+            // Show original image
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                originalImage.src = e.target.result;
+                originalPreview.style.display = 'block';
+                resultPreview.style.display = 'none';
+                downloadBtn.style.display = 'none';
+                removeBackground(file);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        async function removeBackground(file) {
+            loading.style.display = 'block';
+            errorMessage.style.display = 'none';
+
+            const formData = new FormData();
+            formData.append('image_file', file);
+
+            try {
+                const response = await fetch('https://api.remove.bg/v1.0/removebg', {
+                    method: 'POST',
+                    headers: {
+                        'X-Api-Key': 'qQG4sKZYouFPgHXZCBjqwTir'
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to remove background');
+                }
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                
+                resultImage.src = url;
+                resultImage.setAttribute('data-original', url);
+                resultPreview.style.display = 'block';
+                downloadBtn.href = url;
+                downloadBtn.style.display = 'block';
+                
+                // Apply initial enhancements
+                applyEnhancements();
+            } catch (error) {
+                showError('Failed to process image. Please try again.');
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
